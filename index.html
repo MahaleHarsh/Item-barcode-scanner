@@ -790,18 +790,31 @@ $("#langBtn").onclick = () => {
 
 /* ---------- Auth & navigation ---------- */
 let me = null;
+/* Stay signed in on this device until "Sign out" is pressed.
+   The saved session is only valid while the account and its password are unchanged:
+   if a person is removed or gets a new password, they are asked to sign in again. */
+function saveSession(acc) { store(false, "scan:auth", JSON.stringify({ user: acc.user, h: acc.hash.slice(0, 16) })); }
+function clearSession() { try { localStorage.removeItem("scan:auth"); } catch (e) {} sstore(false, "scan:session", null); }
+function loadSession() {
+  try {
+    const s = JSON.parse(store(true, "scan:auth") || "null");
+    const acc = s && USERS.find(u => u.user === s.user);
+    if (acc && acc.hash.slice(0, 16) === s.h) return acc;
+  } catch (e) {}
+  return null;
+}
 function login(u, p) {
   const name = u.trim().toLowerCase();
   const acc = USERS.find(x => x.user === name);
   if (!acc || !p || passwordHash(acc.user, p.trim(), acc.salt) !== acc.hash) return false;
-  me = acc; sstore(false, "scan:session", acc.user); startApp(); return true;
+  me = acc; saveSession(acc); startApp(); return true;
 }
 $("#lbtn").onclick = () => {
   if (!login($("#lu").value, $("#lp").value)) { $("#lerr").textContent = t("loginErr"); $("#lp").value = ""; $("#lp").focus(); }
 };
 $("#logoutBtn").onclick = () => {
   modal({ title: t("signOutQ"), body: `<p>${t("signOutBody")}</p>`, yes: t("signOut"), no: t("cancel"),
-    onYes: () => { me = null; sstore(false, "scan:session", null); closeCamera(); $("#v-app").classList.add("hidden"); $("#v-login").classList.remove("hidden"); $("#lp").value = ""; $("#lerr").textContent = ""; $("#lu").focus(); } });
+    onYes: () => { me = null; clearSession(); closeCamera(); $("#v-app").classList.add("hidden"); $("#v-login").classList.remove("hidden"); $("#lp").value = ""; $("#lerr").textContent = ""; $("#lu").focus(); } });
 };
 function go(view) {
   closeCamera(); currentView = view;
@@ -1140,8 +1153,7 @@ if ("serviceWorker" in navigator && location.protocol === "https:") {
   mountScanner(document.querySelector('[data-scanner="scan"]'), showScanResult);
   mountScanner(document.querySelector('[data-scanner="list"]'), onListScan);
   setLang(lang, false);
-  const saved = sstore(true, "scan:session");
-  const acc = saved && USERS.find(u => u.user === saved);
+  const acc = loadSession();
   if (acc) { me = acc; startApp(); } else { $("#lu").focus(); }
 })();
 </script>

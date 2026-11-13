@@ -2,7 +2,7 @@
 // Always tries the network first, so every time the app is opened with internet
 // it gets the newest version from GitHub. Without internet it uses the saved copy.
 // When you publish an update, change VERSION below (any new text) so phones refresh their saved copy.
-const VERSION = "2026-11-11-3";
+const VERSION = "2026-11-13-1";
 const CACHE = "item-scanner-" + VERSION;
 const CORE = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./icon-180.png"];
 
