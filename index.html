@@ -767,18 +767,53 @@ async function openCamera(onCode) {
       };
       tick();
     } else {
-      await loadZXing();
-      if (!camState) return;
+      /* iPhone / Safari and other browsers without BarcodeDetector:
+         open the camera ourselves and decode still frames with ZXing.
+         Only the middle band of the picture (where the frame is) is decoded,
+         which is faster and more reliable on iOS than ZXing's own video loop. */
+      video.setAttribute("playsinline", ""); video.setAttribute("muted", ""); video.muted = true;
+      const [stream] = await Promise.all([
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false }),
+        loadZXing()
+      ]);
+      if (!camState) { stream.getTracks().forEach(x => x.stop()); return; }
+      camState.stream = stream; video.srcObject = stream;
+      try { await video.play(); } catch (e) {}
+      msg.textContent = t("camHold");
       const hints = new Map();
       const F = ZXing.BarcodeFormat;
       hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, [F.EAN_13, F.EAN_8, F.UPC_A, F.UPC_E, F.CODE_128, F.CODE_39, F.ITF]);
       hints.set(ZXing.DecodeHintType.TRY_HARDER, true);
-      const reader = new ZXing.BrowserMultiFormatReader(hints, 120);
-      camState.reader = reader;
-      await reader.decodeFromConstraints({ video: constraints }, video, res => { if (res) onRead(res.getText()); });
-      if (camState) msg.textContent = t("camHold");
+      const reader = new ZXing.MultiFormatReader();
+      reader.setHints(hints);
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      let n = 0;
+      const decode = () => {
+        const lum = new ZXing.HTMLCanvasElementLuminanceSource(canvas);
+        try { return reader.decodeWithState(new ZXing.BinaryBitmap(new ZXing.HybridBinarizer(lum))).getText(); }
+        catch (e) { return null; } finally { reader.reset(); }
+      };
+      const tick = () => {
+        if (!camState || camState.done) return;
+        const vw = video.videoWidth, vh = video.videoHeight;
+        if (vw && vh && video.readyState >= 2) {
+          n++;
+          // every 3rd frame look at the whole picture, otherwise only the middle band
+          const full = n % 3 === 0;
+          const sx = full ? 0 : vw * 0.05, sw = full ? vw : vw * 0.9;
+          const sy = full ? 0 : vh * 0.28, sh = full ? vh : vh * 0.44;
+          const scale = Math.min(1, 1000 / sw);
+          canvas.width = Math.round(sw * scale); canvas.height = Math.round(sh * scale);
+          ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+          const text = decode();
+          if (text) onRead(text);
+        }
+        camState && !camState.done && (camState.timer = setTimeout(tick, 90));
+      };
+      tick();
     }
-  } catch (e) { if (camState) msg.textContent = t("camFail"); }
+  } catch (e) { if (camState) msg.textContent = t("camFail") + (e && e.name ? " (" + e.name + ")" : ""); }
 }
 function closeCamera() {
   if (!camState) return;
