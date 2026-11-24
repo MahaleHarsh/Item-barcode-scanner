@@ -188,6 +188,13 @@ label{display:block;font-weight:600;font-size:.95rem;margin:16px 0 6px}
 .mtag{display:inline-block;background:var(--green-soft);color:var(--green);border-radius:4px;padding:0 6px;font-weight:700;font-size:.8rem;margin-left:6px;font-family:var(--font)}
 .manual h3{font-family:var(--cond);font-size:1.3rem;margin:0 0 4px}
 .manual .qtyhint{margin:0 0 4px}
+.offertag{display:table;margin-left:auto;background:#C8102E;color:#fff;font-family:var(--font);font-weight:700;font-size:.75rem;border-radius:4px;padding:1px 7px;margin-bottom:4px;letter-spacing:.02em}
+.was{display:block;font-family:var(--font);font-weight:500;font-size:.95rem;color:var(--muted);text-decoration:line-through}
+.price.sale{color:#C8102E}
+.res .p .was{font-size:.8rem}
+.res .p.sale{color:#C8102E}
+.offernote{background:var(--warn-bg);color:var(--warn-ink);border-radius:8px;padding:8px 10px;margin:8px 0 10px;font-weight:600;font-size:.92rem}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .price.sale,:root:not([data-theme="light"]) .res .p.sale{color:#FF7A86}}
 </style>
 </head>
 <body>
@@ -311,7 +318,9 @@ const USERS = [
   {"user": "jayesh.mahale", "name": "Jayesh Mahale", "salt": "c184c561b2c5d394", "hash": "cf6151be38e8108c416de83f84d9e7c3f716b345c364e67349355256ab57908f"},
   {"user": "raheel.ahmed", "name": "Raheel Ahmed", "salt": "be9e4c60cb84dce5", "hash": "8ebb1677078186deaa3da17c0caa6bce4f82e2b53c8c0f941b68fce48787b221"},
   {"user": "chatan.yeshod", "name": "Chatan Yeshod", "salt": "a7f42a74a10f16c9", "hash": "d0c21f12c82751e096174c7b241967ead752cde3768a7665116be92752e01fab"},
-  {"user": "michael.gamper", "name": "Michael Gamper", "salt": "208e1acacef39ead", "hash": "663b30087d422f6032e1db52a754964477ab1fbc024f702ed3078d947fdf2aa7"}
+  {"user": "michael.gamper", "name": "Michael Gamper", "salt": "208e1acacef39ead", "hash": "663b30087d422f6032e1db52a754964477ab1fbc024f702ed3078d947fdf2aa7"},
+  {"user": "lisa", "name": "Lisa", "salt": "e216ae6910a00957", "hash": "3aab73a59656bf0415d7a14c5fab372381a8b35597b4302e53a0ba251e372985"},
+  {"user": "lisa.bertoldi", "name": "Lisa Bertoldi", "salt": "e634860170caaddb", "hash": "f58be05cd57bcf7eda08047d061cc146f364ae468e87de6dc06a60fa1e582070"}
 ];
 /* Accounts: passwords are NOT stored in this file, only a salted, repeated
    SHA-256 hash of them. To add/remove a person or reset a password, ask for a
@@ -370,7 +379,7 @@ const I18N = {
     listSearchPh: "Vendor item no. or description", clearList: "Clear list", exportCsv: "Export CSV",
     barcode: "Barcode", scanPh: "Scan or type barcode", camera: "Camera", cameraAria: "Scan with camera",
     scanHint: "A handheld scanner works too – scan with the cursor in the field. You can also type an item no.",
-    camPoint: "Point at the barcode", close: "Close", camStarting: "Starting camera…", camHold: "Hold steady – it scans automatically.", camChecking: "Checking the barcode – keep holding steady…", installApp: "Install as app", suggest: "Send a suggestion", suggestSub: "Ideas or problems? Send them via WhatsApp", report: "Report a problem with this item", waHead: "Item Scanner – suggestion from {n}:", waItem: "Item: {i}", cantFind: "Can’t find the item? Add it manually", addManual: "Add manually", manualT: "Add item manually", manualHint: "Enter the vendor item no. or a description (at least one), then the quantity.", manualDesc: "Description", barcodeOpt: "Barcode (optional)", errManual: "Enter a vendor item no. or a description.", manualTag: "Manual", manualSame: "This item was already added manually with quantity {q}. Add the new quantity to the same line?", csvNote: "Note", csvManual: "Manual entry – not in item list", installSub: "Open it from your home screen like a normal app",
+    camPoint: "Point at the barcode", close: "Close", camStarting: "Starting camera…", camHold: "Hold steady – it scans automatically.", camChecking: "Checking the barcode – keep holding steady…", offerUntil: "Offer until {d}", offer3x: "Flyer offer: 3 bags for 35,00 € instead of 41,70 €", offerSetPants: "Flyer set offer: with Mascot fleece jacket A52941 together 174,90 € instead of 194,80 €", offerSetFleece: "Flyer set offer: with Mascot trousers A49891 together 174,90 € instead of 194,80 €", offerTrees: "In the flyer: Nordmann firs from 27,90 € – only available in Lana from 24.11.", installApp: "Install as app", suggest: "Send a suggestion", suggestSub: "Ideas or problems? Send them via WhatsApp", report: "Report a problem with this item", waHead: "Item Scanner – suggestion from {n}:", waItem: "Item: {i}", cantFind: "Can’t find the item? Add it manually", addManual: "Add manually", manualT: "Add item manually", manualHint: "Enter the vendor item no. or a description (at least one), then the quantity.", manualDesc: "Description", barcodeOpt: "Barcode (optional)", errManual: "Enter a vendor item no. or a description.", manualTag: "Manual", manualSame: "This item was already added manually with quantity {q}. Add the new quantity to the same line?", csvNote: "Note", csvManual: "Manual entry – not in item list", installSub: "Open it from your home screen like a normal app",
     camFail: "Camera is not available here. Allow camera access in your browser, or close this and type the barcode / use a handheld scanner.",
     inclVat: "incl. VAT", noDesc: "No description", variant: "Variant", vendorItemNo: "Vendor item no.", vendorNo: "Vendor no.", unit: "Unit",
     showingOf: "Showing {a} of {b} matches – type more to narrow down", match1: "1 match", matchN: "{n} matches",
@@ -409,7 +418,7 @@ const I18N = {
     listSearchPh: "Kreditoren-Artikelnr. oder Beschreibung", clearList: "Liste leeren", exportCsv: "CSV exportieren",
     barcode: "Barcode", scanPh: "Barcode scannen oder eingeben", camera: "Kamera", cameraAria: "Mit Kamera scannen",
     scanHint: "Ein Handscanner funktioniert auch – einfach scannen, während der Cursor im Feld ist. Auch die Artikelnr. kann eingegeben werden.",
-    camPoint: "Kamera auf den Barcode richten", close: "Schließen", camStarting: "Kamera wird gestartet…", camHold: "Ruhig halten – der Scan erfolgt automatisch.", camChecking: "Barcode wird geprüft – bitte ruhig halten…", installApp: "Als App installieren", suggest: "Vorschlag senden", suggestSub: "Ideen oder Probleme? Per WhatsApp senden", report: "Problem mit diesem Artikel melden", waHead: "Artikel-Scanner – Vorschlag von {n}:", waItem: "Artikel: {i}", cantFind: "Artikel nicht gefunden? Manuell hinzufügen", addManual: "Manuell hinzufügen", manualT: "Artikel manuell hinzufügen", manualHint: "Kreditoren-Artikelnr. oder Beschreibung eingeben (mindestens eines), dann die Menge.", manualDesc: "Beschreibung", barcodeOpt: "Barcode (optional)", errManual: "Bitte Kreditoren-Artikelnr. oder Beschreibung eingeben.", manualTag: "Manuell", manualSame: "Dieser Artikel wurde schon manuell mit Menge {q} hinzugefügt. Neue Menge zur selben Zeile hinzufügen?", csvNote: "Hinweis", csvManual: "Manuell erfasst – nicht im Artikelstamm", installSub: "Wie eine normale App vom Startbildschirm öffnen",
+    camPoint: "Kamera auf den Barcode richten", close: "Schließen", camStarting: "Kamera wird gestartet…", camHold: "Ruhig halten – der Scan erfolgt automatisch.", camChecking: "Barcode wird geprüft – bitte ruhig halten…", offerUntil: "Angebot bis {d}", offer3x: "Flyer-Angebot: 3 Säcke für 35,00 € statt 41,70 €", offerSetPants: "Flyer-Set-Angebot: mit Mascot Fleece A52941 zusammen 174,90 € statt 194,80 €", offerSetFleece: "Flyer-Set-Angebot: mit Mascot Hose A49891 zusammen 174,90 € statt 194,80 €", offerTrees: "Im Flyer: Nordmanntannen ab 27,90 € – nur in Lana ab 24.11.", installApp: "Als App installieren", suggest: "Vorschlag senden", suggestSub: "Ideen oder Probleme? Per WhatsApp senden", report: "Problem mit diesem Artikel melden", waHead: "Artikel-Scanner – Vorschlag von {n}:", waItem: "Artikel: {i}", cantFind: "Artikel nicht gefunden? Manuell hinzufügen", addManual: "Manuell hinzufügen", manualT: "Artikel manuell hinzufügen", manualHint: "Kreditoren-Artikelnr. oder Beschreibung eingeben (mindestens eines), dann die Menge.", manualDesc: "Beschreibung", barcodeOpt: "Barcode (optional)", errManual: "Bitte Kreditoren-Artikelnr. oder Beschreibung eingeben.", manualTag: "Manuell", manualSame: "Dieser Artikel wurde schon manuell mit Menge {q} hinzugefügt. Neue Menge zur selben Zeile hinzufügen?", csvNote: "Hinweis", csvManual: "Manuell erfasst – nicht im Artikelstamm", installSub: "Wie eine normale App vom Startbildschirm öffnen",
     camFail: "Kamera hier nicht verfügbar. Erlaube den Kamerazugriff im Browser oder schließe dieses Fenster und gib den Barcode ein / nutze einen Handscanner.",
     inclVat: "inkl. MwSt.", noDesc: "Keine Beschreibung", variant: "Variante", vendorItemNo: "Kred.-Artikelnr.", vendorNo: "Kreditorennr.", unit: "Einheit",
     showingOf: "{a} von {b} Treffern – weiter tippen zum Eingrenzen", match1: "1 Treffer", matchN: "{n} Treffer",
@@ -448,7 +457,7 @@ const I18N = {
     listSearchPh: "Codice fornitore o descrizione", clearList: "Svuota lista", exportCsv: "Esporta CSV",
     barcode: "Codice a barre", scanPh: "Scansiona o digita il codice", camera: "Fotocamera", cameraAria: "Scansiona con la fotocamera",
     scanHint: "Funziona anche con un lettore palmare: scansiona con il cursore nel campo. Puoi anche digitare il n. articolo.",
-    camPoint: "Inquadra il codice a barre", close: "Chiudi", camStarting: "Avvio fotocamera…", camHold: "Tieni fermo: la scansione è automatica.", camChecking: "Verifica del codice – tieni fermo…", installApp: "Installa come app", suggest: "Invia un suggerimento", suggestSub: "Idee o problemi? Inviali via WhatsApp", report: "Segnala un problema con questo articolo", waHead: "Scanner articoli – suggerimento da {n}:", waItem: "Articolo: {i}", cantFind: "Articolo non trovato? Aggiungilo a mano", addManual: "Aggiungi a mano", manualT: "Aggiungi articolo a mano", manualHint: "Inserisci il codice fornitore o una descrizione (almeno uno), poi la quantità.", manualDesc: "Descrizione", barcodeOpt: "Codice a barre (facoltativo)", errManual: "Inserisci un codice fornitore o una descrizione.", manualTag: "Manuale", manualSame: "Questo articolo è già stato aggiunto a mano con quantità {q}. Aggiungere la nuova quantità alla stessa riga?", csvNote: "Nota", csvManual: "Inserito a mano – non in anagrafica", installSub: "Aprila dalla schermata home come una normale app",
+    camPoint: "Inquadra il codice a barre", close: "Chiudi", camStarting: "Avvio fotocamera…", camHold: "Tieni fermo: la scansione è automatica.", camChecking: "Verifica del codice – tieni fermo…", offerUntil: "Offerta fino al {d}", offer3x: "Offerta volantino: 3 sacchi a 35,00 € invece di 41,70 €", offerSetPants: "Offerta set volantino: con pile Mascot A52941 insieme 174,90 € invece di 194,80 €", offerSetFleece: "Offerta set volantino: con pantaloni Mascot A49891 insieme 174,90 € invece di 194,80 €", offerTrees: "Nel volantino: abeti Nordmann da 27,90 € – solo a Lana dal 24.11.", installApp: "Installa come app", suggest: "Invia un suggerimento", suggestSub: "Idee o problemi? Inviali via WhatsApp", report: "Segnala un problema con questo articolo", waHead: "Scanner articoli – suggerimento da {n}:", waItem: "Articolo: {i}", cantFind: "Articolo non trovato? Aggiungilo a mano", addManual: "Aggiungi a mano", manualT: "Aggiungi articolo a mano", manualHint: "Inserisci il codice fornitore o una descrizione (almeno uno), poi la quantità.", manualDesc: "Descrizione", barcodeOpt: "Codice a barre (facoltativo)", errManual: "Inserisci un codice fornitore o una descrizione.", manualTag: "Manuale", manualSame: "Questo articolo è già stato aggiunto a mano con quantità {q}. Aggiungere la nuova quantità alla stessa riga?", csvNote: "Nota", csvManual: "Inserito a mano – non in anagrafica", installSub: "Aprila dalla schermata home come una normale app",
     camFail: "Fotocamera non disponibile qui. Consenti l'accesso alla fotocamera nel browser, oppure chiudi e digita il codice / usa un lettore palmare.",
     inclVat: "IVA incl.", noDesc: "Nessuna descrizione", variant: "Variante", vendorItemNo: "Cod. fornitore", vendorNo: "N. fornitore", unit: "Unità",
     showingOf: "{a} di {b} risultati – continua a digitare per restringere", match1: "1 risultato", matchN: "{n} risultati",
@@ -582,6 +591,46 @@ function modal({ title, body, yes, no, danger = false, onYes, onNo }) {
   root.querySelector(".modal").onkeydown = e => { if (e.key === "Escape") { close(); onNo && onNo(); } };
   $("#mYes").focus();
 }
+
+/* ---------- Flyer offers (Winterflyer 2026) ----------
+   [offer price, price before discount (null = none printed), note key]
+   Shown only between OFFER_FROM and OFFER_TO (inclusive). After that the
+   normal prices from the item list are used again automatically. */
+const OFFER_FROM = "2026-11-13", OFFER_TO = "2026-12-15";
+const OFFERS = {
+  A39681:[3.90,null], A39682:[6.20,null], A14492:[32.90,36.90], A34528:[27.90,30.90], A48383:[26.90,29.90],
+  A28572:[389.90,430.90], A03825:[26.12,null], A36686:[15.17,null], A22669:[75.90,83.90], A31873:[34.90,39.00],
+  A01029:[2.90,3.20], A00464:[4.90,5.50], A05168:[50.90,null], A20930:[6.90,7.93], A23800:[14.90,16.90],
+  A81537:[16.90,18.95], A04820:[15.90,17.90], A34458:[21.90,23.90], A06066:[20.90,null], A47938:[44.90,49.90],
+  A27325:[23.90,26.90], A17909:[12.70,13.90], A49511:[26.90,29.90], A13808:[5.90,6.50], A02468:[24.90,28.00],
+  A39731:[13.90,15.50], A19599:[22.90,24.90], A19598:[5.50,6.20], A19601:[2.10,2.30], A41160:[36.90,40.70],
+  A19594:[8.50,9.40], A32544:[290.00,null], A04577:[4.90,null], A32598:[3.99,null], A14091:[7.99,null],
+  A43785:[13.90,null,"offer3x"], A04842:[10.00,12.90], A03178:[22.90,25.90], A21835:[379.00,null],
+  A04812:[6.90,null], A39593:[10.40,null], A05077:[3.50,3.90], A37216:[14.90,16.90], A03117:[38.90,42.90],
+  A03142:[31.90,34.90], A04514:[98.90,109.90], A51927:[99.90,null], A05953:[299.00,325.00], A50045:[31.90,34.90],
+  A50046:[31.90,34.90], A38933:[10.50,11.50], A51892:[26.90,29.90], A01435:[109.90,121.90], A51114:[35.90,39.90],
+  A47366:[44.90,49.90], A47368:[33.90,37.90],
+  A49891:[null,null,"offerSetPants"], A52941:[null,null,"offerSetFleece"],
+  A51624:[null,null,"offerTrees"], A51625:[null,null,"offerTrees"], A51626:[null,null,"offerTrees"], A51627:[null,null,"offerTrees"]
+};
+function todayISO() { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+function offersActive() { const d = todayISO(); return d >= OFFER_FROM && d <= OFFER_TO; }
+/* Returns { price, was, offer:boolean, note } for an item row */
+function priceInfo(r) {
+  const base = r[7];
+  const o = offersActive() ? OFFERS[r[1]] : null;
+  if (!o) return { price: base, was: null, offer: false, note: null };
+  const [p, w, note] = o;
+  if (p == null) return { price: base, was: null, offer: true, note };
+  let was = w;
+  if (was == null && base != null && base > p) was = base;
+  return { price: p, was, offer: true, note };
+}
+function priceBadge(pi) {
+  if (!pi.offer || pi.was == null) return "";
+  const until = new Date(OFFER_TO + "T00:00:00").toLocaleDateString(LOCALES[lang]);
+  return `<span class="offertag">${esc(t("offerUntil", { d: until }))}</span>`;
+}
 const WA_NUMBER = "393400015687";
 function waLink(itemText) {
   let msg = t("waHead", { n: me ? me.name : "" }) + "\n\n";
@@ -590,13 +639,15 @@ function waLink(itemText) {
 }
 function itemCard(entry, { hit = false, extra = "", cls = "", report = true } = {}) {
   const r = ROWS[entry.i];
+  const pi = priceInfo(r);
   const codes = entry.codes.length ? entry.codes.join(", ") : "–";
   return `<article class="item ${hit ? "hit" : ""} ${cls}">
     <div class="item-top">
       <div class="itemno">${esc(r[1])}</div>
-      <div class="price">${money(r[7])}<small>${t("inclVat")}${r[8] != null ? " (" + r[8] + "%)" : ""}${r[3] ? " / " + esc(r[3]) : ""}</small></div>
+      <div class="price${pi.offer && pi.price !== r[7] ? " sale" : ""}">${priceBadge(pi)}${pi.was != null ? `<span class="was">${money(pi.was)}</span>` : ""}${money(pi.price)}<small>${t("inclVat")}${r[8] != null ? " (" + r[8] + "%)" : ""}${r[3] ? " / " + esc(r[3]) : ""}</small></div>
     </div>
     <div class="desc">${esc(r[4]) || "<em>" + t("noDesc") + "</em>"}</div>
+    ${pi.note ? `<div class="offernote">${esc(t(pi.note))}</div>` : ""}
     ${r[2] ? `<div class="variant">${t("variant")}: ${esc(r[2])}</div>` : ""}
     <dl class="facts">
       <dt>${t("vendorItemNo")}</dt><dd>${esc(r[6]) || "–"}</dd>
@@ -617,7 +668,7 @@ function resultList(entries, onPick, total) {
     const li = document.createElement("li");
     li.innerHTML = `<button class="res"><span class="l"><b>${esc(r[1])}</b>${r[2] ? `<span class="v">${esc(r[2])}</span>` : ""}
       <span class="d">${esc(r[4])}</span><span class="m">${t("vendorItemNo")} ${esc(r[6]) || "–"}</span></span>
-      <span class="p">${money(r[7])}</span></button>`;
+      <span class="p${priceInfo(r).was != null ? " sale" : ""}">${priceInfo(r).was != null ? `<span class="was">${money(priceInfo(r).was)}</span>` : ""}${money(priceInfo(r).price)}</span></button>`;
     li.firstChild.onclick = () => onPick(e);
     ul.appendChild(li);
   });
@@ -1044,7 +1095,7 @@ function submitQty() {
   let line = list.lines.find(l => l.key === key);
   if (line) line.qty = round3(line.qty + n);
   else {
-    line = { key, itemNo: r[1], variant: r[2], desc: r[4], uom: r[3], price: r[7], vendorItemNo: r[6], barcode: pending.entry.codes[0] || "", qty: n };
+    line = { key, itemNo: r[1], variant: r[2], desc: r[4], uom: r[3], price: priceInfo(r).price, was: priceInfo(r).was, vendorItemNo: r[6], barcode: pending.entry.codes[0] || "", qty: n };
     list.lines.unshift(line);
   }
   saveList();
@@ -1064,7 +1115,7 @@ function renderList(flashKey) {
   } else {
     ul.innerHTML = list.lines.map((l, idx) => `<li class="line ${l.key === flashKey ? "flash" : ""}" data-idx="${idx}">
       <div class="line-top"><div class="l"><b>${l.manual ? esc(l.vendorItemNo || "") : esc(l.itemNo)}</b>${l.manual ? `<span class="mtag">${t("manualTag")}</span>` : ""}${l.variant ? `<span class="v">${esc(l.variant)}</span>` : ""}
-        <span class="d">${esc(l.desc)}</span><span class="m">${l.barcode ? esc(l.barcode) + (l.manual ? "" : " · ") : ""}${l.manual ? "" : money(l.price) + " / " + esc(l.uom || t("pcs"))}</span></div>
+        <span class="d">${esc(l.desc)}</span><span class="m">${l.barcode ? esc(l.barcode) + (l.manual ? "" : " · ") : ""}${l.manual ? "" : (l.was != null ? "<s>" + money(l.was) + "</s> " : "") + money(l.price) + " / " + esc(l.uom || t("pcs"))}</span></div>
         <button class="del" data-act="del" aria-label="${esc(t("remove") + " " + (l.itemNo || l.vendorItemNo || l.desc))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg></button></div>
       <div class="line-bot"><div class="stepper"><button data-act="minus" aria-label="${t("less")}">−</button>
         <input value="${qInput(l.qty)}" inputmode="decimal" data-act="qty" aria-label="${esc(t("qty", { u: l.uom || t("pcs") }))}"><button data-act="plus" aria-label="${t("more")}">+</button></div>
